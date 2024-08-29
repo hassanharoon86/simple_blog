@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :posts do
-    resource :like, only: [:create, :destroy]
+    resource :likes, only: [:create, :destroy]
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

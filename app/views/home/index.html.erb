@@ -1,5 +1,3 @@
-<h1>All Posts</h1>
-
 <div class="row">
   <% @posts.each do |post| %>
     <div class="row mb-2">
@@ -10,6 +8,19 @@
             <h3 class="mb-0"><%= post.title %></h3>
             <div class="mb-1 text-muted"><%= post.created_at.to_date %></div>
             <p class="mb-auto"><%= post.content %></p>
+
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <div>
+                <% if user_signed_in? %>
+                  <% if post.likes.find_by(user: current_user) %>
+                    <%= button_to 'Unlike', post_likes_path(post), method: :delete, class: 'btn btn-sm btn-outline-danger' %>
+                  <% else %>
+                    <%= button_to 'Like', post_likes_path(post), remote: true, class: 'btn btn-sm btn-outline-primary' %>
+                  <% end %>
+                <% end %>
+              </div>
+              <small class="text-muted"><%= pluralize(post.likes_count, 'likes') %></small>
+            </div>
           </div>
         </div>
       </div>
