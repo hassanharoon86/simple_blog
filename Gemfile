@@ -71,4 +71,5 @@ group :test do
 
 end
 
-gem "bootstrap"
+gem 'bootstrap'
+gem 'devise'
