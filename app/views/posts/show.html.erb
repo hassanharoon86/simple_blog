@@ -2,15 +2,5 @@
 
 <p><%= @post.content %></p>
 
-<!--<p><strong>Likes:</strong> <%#= @post.likes.count %></p>-->
-
-<%# if user_signed_in? %>
-  <%# if @post.likes.find_by(user: current_user) %>
-    <%#= button_to 'Unlike', post_like_path(@post), method: :delete, class: 'btn btn-warning' %>
-  <%# else %>
-    <%#= button_to 'Like', post_likes_path(@post), class: 'btn btn-primary' %>
-  <%# end %>
-<%# end %>
-
 <%= link_to 'Edit', edit_post_path(@post), class: 'btn btn-secondary' %>
 <%= link_to 'Back', posts_path, class: 'btn btn-light' %>
