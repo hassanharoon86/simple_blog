@@ -1,23 +1,43 @@
 <h1>Posts</h1>
 
-<%= link_to 'New Post', new_post_path, class: 'btn btn-primary' %>
-
-<h1>My Posts</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1>My Posts</h1>
+  <%= link_to 'New Post', new_post_path, class: 'btn btn-primary ml-auto' %>
+</div>
 
 <div class="row">
   <% @posts.each do |post| %>
-    <div class="row mb-2">
-      <div class="col-md-6">
-        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-          <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-success"><%= post.user.email %></strong>
-            <h3 class="mb-0"><%= post.title %></h3>
-            <div class="mb-1 text-muted"><%= post.created_at.to_date %></div>
-            <p class="mb-auto"><%= post.content %></p>
+    <div class="col-md-8 offset-md-2 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-3">
+            <%= image_tag 'user.jpg', alt: post.user.full_name, class: 'rounded-circle mr-3', style: 'width: 50px; height: 50px;' %>
+            <div>
+              <h5 class="card-title mb-1"><%= post.user.full_name %></h5>
+              <small class="text-muted"><%= time_ago_in_words(post.created_at) %> ago</small>
+            </div>
+          </div>
+          <p class="card-text"><%= post.content %></p>
+
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <% if user_signed_in? %>
+                <% if post.likes.find_by(user: current_user) %>
+                  <%= button_to post_likes_path(post), method: :delete, remote: true, class: 'btn btn-sm btn-link text-primary', data: { turbo_frame: "post_#{post.id}" } do %>
+                    <%= image_tag 'like-filled.png', class: 'rounded-circle mr-3', style: 'width: 20px; height: 20px;' %>
+                    ( <%= post.likes_count %> )
+                  <% end %>
+                <% else %>
+                  <%= button_to post_likes_path(post), remote: true, class: 'btn btn-sm btn-link text-muted', data: { turbo_frame: "post_#{post.id}" } do %>
+                    <%= image_tag 'like-unfilled.png', class: 'rounded-circle mr-3', style: 'width: 20px; height: 20px;' %>
+                    ( <%= post.likes_count %> )
+                  <% end %>
+                <% end %>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>
     </div>
   <% end %>
 </div>
-
