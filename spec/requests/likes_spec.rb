@@ -1,27 +1,28 @@
 require 'rails_helper'
 
 RSpec.describe "Likes", type: :request do
-  let(:user) { FactoryBot.create(:user) }
-  let(:post_instance) { FactoryBot.create(:post, user: user) }
-  
+  let(:user) { create(:user) }
+  let(:post_instance) { create(:post, user: user) }
+
   before do
     login_as(user, scope: :user)
   end
 
-  context "POST /create" do
-    it "creates a like for a post" do
-      post post_likes_path(post_instance)
-      expect(response).to redirect_to root_path
-      expect(flash[:notice]).to eq 'Post liked!'
+  context "POST /posts/:post_id/likes" do
+    it "creates a like for the post" do
+      post post_likes_path(post_instance), params: { like: { likeable_type: "Post", likeable_id: post_instance.id} }
+      expect(response).to redirect_to(root_path)
+      expect(flash[:notice]).to eq('Item liked!')
     end
   end
 
-  context "DELETE /destroy" do
-    it "destroys a like for a post" do
-      FactoryBot.create(:like, post: post_instance, user: user)
-      delete post_likes_path(post_instance)
-      expect(response).to redirect_to root_path
-      expect(flash[:notice]).to eq 'Post unliked!'
+  context "DELETE /posts/:post_id/likes/:id" do
+    let!(:like) { create(:like, user: user, likeable: post_instance) }
+
+    it "removes the like from the post" do
+      delete post_like_path(post_instance, like)
+      expect(response).to redirect_to(root_path)
+      expect(flash[:notice]).to eq('Item unliked!')
     end
   end
 end

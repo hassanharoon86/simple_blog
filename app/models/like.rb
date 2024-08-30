@@ -1,15 +1,15 @@
 class Like < ApplicationRecord
+  belongs_to :likeable, polymorphic: true
   belongs_to :user
-  belongs_to :post
 
-  validates :user_id, uniqueness: { scope: :post_id }
+  validates :user_id, uniqueness: { scope: [:likeable_id, :likeable_type] }
 
-  after_create :update_post_likes
-  after_destroy :update_post_likes
+  after_create :update_likes_count
+  after_destroy :update_likes_count
 
   private
 
-  def update_post_likes
-    post.update_column(:likes_count, post.likes.count)
+  def update_likes_count
+    likeable.update_column(:likes_count, likeable.likes.count)
   end
 end

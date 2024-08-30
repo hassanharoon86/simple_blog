@@ -1,19 +1,13 @@
 class LikesController < ApplicationController
-  before_action :set_post
+  before_action :set_likeable
 
   def create
-    @post.likes.create(user: current_user)
-    redirect_to root_path, notice: 'Post liked!'
+    @likeable.likes.create(user: current_user)
+    redirect_to root_path, notice: 'Item liked!'
   end
 
   def destroy
-    @post.likes.find_by(user: current_user).destroy
-    redirect_to root_path, notice: 'Post unliked!'
-  end
-
-  private
-
-  def set_post
-    @post = Post.find(params[:post_id])
+    @likeable.likes.find_by(user: current_user).destroy
+    redirect_to root_path, notice: 'Item unliked!'
   end
 end

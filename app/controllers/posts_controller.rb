@@ -3,6 +3,7 @@ class PostsController < ApplicationController
 
   def index
     @posts = current_user.posts.includes(:user)
+    @likes = current_user.likes.where(likeable_type: "Post").index_by(&:likeable_id)
   end
 
   def show; end
