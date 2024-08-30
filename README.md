@@ -8,7 +8,8 @@
      - **`LikesController`**: Handles liking and unliking posts by authenticated users, managing the creation and destruction of like records.
    - **Models:**
      - **`Post`**: Represents a post with attributes like title and content. It has associations with likes and users, ensuring that posts are properly linked to their creators and liked by users.
-     - **`Like`**: Represents a like on a post, linking users to the posts they like.
+     - **`Like`**: Represents a like on a post, linking users to the posts they like. This model uses polymorphic associations to allow likes to be associated with different types of objects (e.g., posts) rather than just one specific type.
+   - **Polymorphic Associations**: The `Like` model uses polymorphic associations to enable a like to be associated with multiple types of likeable objects. This approach allows for greater flexibility, as likes can be applied to different resources (e.g., posts) without needing separate like models for each resource type.
 
 2. **Routes:**
    - **Resourceful Routing**: Uses RESTful routes for posts (`/posts`) and likes (`/posts/:post_id/likes`), following Rails conventions for CRUD operations and nested resources for likes.
@@ -34,7 +35,7 @@
    - **Purpose**: Ensures that the models’ validations, associations, and methods function as expected. Verifies that models enforce business rules and maintain data integrity.
    - **Implementation:**
      - **`Post` Model**: Tests for validations (e.g., presence of title and content) and associations (e.g., `has_many :likes`). Uses Shoulda Matchers to simplify validation and association testing.
-     - **`Like` Model**: Tests for associations (e.g., `belongs_to :post`, `belongs_to :user`). Verifies that a like is correctly associated with a post and a user.
+     - **`Like` Model**: Tests for associations (e.g., `belongs_to :likeable, polymorphic: true`, `belongs_to :user`). Verifies that a like is correctly associated with a likeable object and a user.
 
 3. **Skipping Controller Specs:**
    - **Reasoning**: Request specs are used instead of controller specs to cover the entire request lifecycle. This approach simplifies the test suite and provides more comprehensive coverage of the application's behavior, ensuring that all components work together correctly.
@@ -55,4 +56,4 @@
 
 ### Overall Summary
 
-The implementation leverages Rails conventions for MVC architecture, with controllers managing requests, models handling data, and views rendering responses. Devise handles user authentication, providing secure and efficient user management. Bootstrap enhances the user interface with responsive design and pre-designed components. Request specs offer comprehensive testing of the application's behavior, covering the full request-response cycle and ensuring that all components work together as expected. Model specs validate that models are functioning correctly with respect to their attributes and associations. By using FactoryBot for test data creation, Faker for realistic data generation, and Shoulda Matchers for model validations and associations, the approach ensures a realistic and thorough testing process. This method provides confidence in the application's functionality and user experience, verifying that it meets the specified requirements and handles various scenarios effectively.
+The implementation leverages Rails conventions for MVC architecture, with controllers managing requests, models handling data, and views rendering responses. Devise handles user authentication, providing secure and efficient user management. Bootstrap enhances the user interface with responsive design and pre-designed components. The use of polymorphic associations in the `Like` model provides flexibility, allowing likes to be associated with multiple types of objects. Request specs offer comprehensive testing of the application's behavior, covering the full request-response cycle and ensuring that all components work together as expected. Model specs validate that models are functioning correctly with respect to their attributes and associations. By using FactoryBot for test data creation, Faker for realistic data generation, and Shoulda Matchers for model validations and associations, the approach ensures a realistic and thorough testing process. This method provides confidence in the application's functionality and user experience, verifying that it meets the specified requirements and handles various scenarios effectively.
