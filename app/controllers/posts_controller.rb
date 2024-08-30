@@ -1,13 +1,11 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
   def index
     @posts = current_user.posts.includes(:user)
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @post = current_user.posts.build
@@ -23,8 +21,7 @@ class PostsController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @post.update(post_params)
